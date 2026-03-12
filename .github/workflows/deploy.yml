@@ -49,9 +49,9 @@ jobs:
           cat <<EOF > combined_dist/index.html
           <!DOCTYPE html>
           <html>
-          <head><title>Projects</title></head>
+          <head><title>DEMO DOCUMENTS</title></head>
           <body>
-          <h1>React Projects</h1>
+          <h1>DEMO DOCUMENTS</h1>
           <ul>
             <li><a href="aria/">aria (Create React App)</a></li>
             <li><a href="lume-brand-document/">lume-brand-document (Vite)</a></li>
