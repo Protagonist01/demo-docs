@@ -1,0 +1,80 @@
+name: Deploy React Apps to GitHub Pages
+
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install and Build aria (CRA)
+        working-directory: ./aria
+        run: |
+          npm ci || npm install
+          npm run build
+
+      - name: Install and Build lume-brand-document (Vite)
+        working-directory: ./lume-brand-document
+        run: |
+          npm ci || npm install
+          npm run build
+
+      - name: Prepare Deployment Directory
+        run: |
+          mkdir -p combined_dist/aria
+          mkdir -p combined_dist/lume-brand-document
+          cp -R aria/build/* combined_dist/aria/
+          cp -R lume-brand-document/dist/* combined_dist/lume-brand-document/
+          
+          # Create a simple index.html to navigate between apps
+          cat <<EOF > combined_dist/index.html
+          <!DOCTYPE html>
+          <html>
+          <head><title>Projects</title></head>
+          <body>
+          <h1>React Projects</h1>
+          <ul>
+            <li><a href="aria/">aria (Create React App)</a></li>
+            <li><a href="lume-brand-document/">lume-brand-document (Vite)</a></li>
+          </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './combined_dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

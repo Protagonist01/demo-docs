@@ -1,0 +1,29 @@
+﻿On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    aria/App.js
+	deleted:    aria/index.html
+	deleted:    aria/index.js
+	modified:   aria/package.json
+	deleted:    aria/styles.css
+	modified:   lume-brand-document/index.html
+	modified:   lume-brand-document/package.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.github/
+	.vscode/
+	aria/build/
+	aria/node_modules/
+	aria/package-lock.json
+	aria/public/
+	aria/src/
+	lume-brand-document/node_modules/
+	lume-brand-document/package-lock.json
+	lume-brand-document/vite.config.js
+	out.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
