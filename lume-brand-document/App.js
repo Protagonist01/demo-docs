@@ -8,17 +8,10 @@ const BRAND = {
   founded: "2019",
   positioning: "Where clinical precision meets considered luxury. LUMÉ exists for clients who want results — not trends.",
   colors: {
-    obsidian: "#0F0E0D",
-    charcoal: "#1A1917",
-    smoke: "#2C2A27",
-    border: "#3A3733",
-    champagne: "#C9B99A",
-    ivory: "#F2EDE6",
-    text: "#E8E2D9",
-    muted: "#8A8278",
-    mutedMid: "#B5AFA7",
-    gold: "#C4A96B",
-    white: "#FAF8F5",
+    obsidian: "#0F0E0D", charcoal: "#1A1917", smoke: "#2C2A27",
+    border: "#3A3733", champagne: "#C9B99A", ivory: "#F2EDE6",
+    text: "#E8E2D9", muted: "#8A8278", mutedMid: "#B5AFA7",
+    gold: "#C4A96B", white: "#FAF8F5",
   },
   fonts: {
     display: "'Cormorant Garamond', serif",
@@ -45,11 +38,21 @@ const BRAND = {
   ],
   skinConcerns: ["Ageing & Fine Lines", "Pigmentation", "Acne & Breakouts", "Sensitivity & Redness", "Dullness & Uneven Tone", "Loss of Volume"],
   aiModules: [
-    { num: "01", name: "LUMÉ Concierge", color: "#C4A96B", desc: "24/7 AI trained on LUMÉ's full service menu, skincare range, and clinical protocols" },
-    { num: "02", name: "Skin Assessment Quiz", color: "#9B8AC4", desc: "7-step skin profile quiz routing visitors to their ideal treatment + product pairing" },
-    { num: "03", name: "Email Flow Engine", color: "#A0785A", desc: "Automated sequences: welcome, post-treatment care, lapsed client reactivation" },
-    { num: "04", name: "Review Growth System", color: "#B8A060", desc: "Post-appointment review requests + social proof surfacing on treatment pages" },
-    { num: "05", name: "Upsell & Replenishment", color: "#5A8FA0", desc: "Homecare pairings, refill reminders, and post-treatment product recommendations" },
+    { num: "01", name: "LUMÉ Concierge", color: "#C4A96B", desc: "24/7 AI trained on LUMÉ's full service menu, skincare range, and clinical protocols", clinic: false },
+    { num: "02", name: "Skin Assessment Quiz", color: "#9B8AC4", desc: "7-step skin profile quiz routing visitors to their ideal treatment + product pairing", clinic: false },
+    { num: "03", name: "Email Flow Engine", color: "#A0785A", desc: "Automated sequences: welcome, post-treatment care, lapsed client reactivation", clinic: false },
+    { num: "04", name: "Review Growth System", color: "#B8A060", desc: "Post-appointment review requests + social proof surfacing on treatment pages", clinic: false },
+    { num: "05", name: "Upsell & Replenishment", color: "#5A8FA0", desc: "Homecare pairings, refill reminders, and post-treatment product recommendations", clinic: false },
+    { num: "06", name: "Smart Booking & No-Show System", color: "#7A9E7E", desc: "Appointment confirmation, 48hr + 2hr reminders, no-show recovery, waitlist slot refill, and revenue calculator", clinic: true },
+  ],
+  bookingTriggers: [
+    { trigger: "Appointment confirmed", action: "Confirmation + pre-treatment instructions", timing: "Immediate" },
+    { trigger: "Upcoming appointment", action: "First reminder + preparation notes", timing: "48 hours before" },
+    { trigger: "Upcoming appointment", action: "Final reminder + arrival instructions", timing: "2 hours before" },
+    { trigger: "No-show occurs", action: "Empathetic re-engagement + rebook CTA", timing: "4 hours after" },
+    { trigger: "Cancellation received", action: "Slot opens → waitlist client notified", timing: "Immediate" },
+    { trigger: "Lapsed client (60+ days)", action: "Re-engagement sequence with treatment nudge", timing: "Day 0 / 7 / 14" },
+    { trigger: "Post-treatment (48hrs)", action: "Review request + homecare product recommendation", timing: "48 hours after" },
   ],
 };
 
@@ -68,12 +71,10 @@ const Section = ({ label, children }) => (
 
 const Pill = ({ children, color }) => (
   <span style={{
-    background: (color || C.gold) + "18",
-    color: color || C.gold,
+    background: (color || C.gold) + "18", color: color || C.gold,
     border: `1px solid ${(color || C.gold)}35`,
-    borderRadius: 3, padding: "2px 10px",
-    fontSize: 10, fontFamily: F.mono,
-    fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase",
+    borderRadius: 3, padding: "2px 10px", fontSize: 10,
+    fontFamily: F.mono, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase",
   }}>{children}</span>
 );
 
@@ -90,7 +91,7 @@ export default function LumeBrandSheet() {
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <span style={{ fontFamily: F.display, fontSize: 26, fontWeight: 300, letterSpacing: "0.22em", color: C.ivory }}>LUMÉ</span>
           <span style={{ width: 1, height: 20, background: C.border }} />
-          <span style={{ fontFamily: F.mono, fontSize: 10, color: C.muted, letterSpacing: "0.12em" }}>BRAND DOCUMENT</span>
+          <span style={{ fontFamily: F.mono, fontSize: 10, color: C.muted, letterSpacing: "0.12em" }}>BRAND DOCUMENT v1.1</span>
         </div>
         <Pill>Fictional Demo Brand</Pill>
       </div>
@@ -111,10 +112,9 @@ export default function LumeBrandSheet() {
 
       <div style={{ padding: "40px 36px 80px", maxWidth: 1020, margin: "0 auto" }}>
 
-        {/* ── IDENTITY ── */}
+        {/* IDENTITY */}
         {activeTab === "Identity" && (
           <div>
-            {/* Hero */}
             <div style={{ marginBottom: 52, paddingBottom: 40, borderBottom: `1px solid ${C.border}` }}>
               <div style={{ fontFamily: F.mono, fontSize: 10, color: C.gold, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 16 }}>Fictional Demo Brand · Aesthetic Clinic + Skincare</div>
               <h1 style={{ fontFamily: F.display, fontSize: 72, fontWeight: 300, margin: "0 0 8px", letterSpacing: "0.18em", color: C.ivory, lineHeight: 1 }}>LUMÉ</h1>
@@ -182,7 +182,7 @@ export default function LumeBrandSheet() {
           </div>
         )}
 
-        {/* ── COLOURS & TYPE ── */}
+        {/* COLOURS & TYPE */}
         {activeTab === "Colours & Type" && (
           <div>
             <Section label="Colour Palette">
@@ -209,8 +209,6 @@ export default function LumeBrandSheet() {
                   </div>
                 ))}
               </div>
-
-              {/* Palette in use */}
               <div style={{ background: `linear-gradient(135deg, ${C.charcoal}, ${C.smoke})`, border: `1px solid ${C.border}`, borderRadius: 10, padding: 28, display: "flex", flexDirection: "column", gap: 6 }}>
                 <div style={{ fontFamily: F.mono, fontSize: 9, color: C.muted, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: 8 }}>Palette in context</div>
                 <div style={{ fontFamily: F.display, fontSize: 36, fontWeight: 300, letterSpacing: "0.16em", color: C.ivory }}>LUMÉ</div>
@@ -244,7 +242,7 @@ export default function LumeBrandSheet() {
           </div>
         )}
 
-        {/* ── SERVICES ── */}
+        {/* SERVICES */}
         {activeTab === "Services" && (
           <div>
             <Section label="Treatment Menu">
@@ -266,7 +264,7 @@ export default function LumeBrandSheet() {
           </div>
         )}
 
-        {/* ── PRODUCTS ── */}
+        {/* PRODUCTS */}
         {activeTab === "Products" && (
           <div>
             <Section label="Skincare Range">
@@ -286,13 +284,13 @@ export default function LumeBrandSheet() {
           </div>
         )}
 
-        {/* ── AI SUITE ── */}
+        {/* AI SUITE */}
         {activeTab === "AI Suite" && (
           <div>
             <div style={{ marginBottom: 32 }}>
               <h2 style={{ fontFamily: F.display, fontSize: 34, fontWeight: 300, margin: "0 0 10px", letterSpacing: "0.06em", color: C.ivory }}>The LUMÉ AI Growth System</h2>
               <p style={{ fontSize: 13, color: C.mutedMid, lineHeight: 1.75, maxWidth: 580, margin: 0 }}>
-                Five AI-powered engines built specifically for LUMÉ — trained on the treatment menu, the skincare range, the brand voice, and the client journey from first visit to loyal customer.
+                Six AI-powered engines built specifically for LUMÉ — trained on the treatment menu, the skincare range, the brand voice, and the client journey from first enquiry to loyal returning client.
               </p>
             </div>
 
@@ -303,26 +301,31 @@ export default function LumeBrandSheet() {
                 { label: "→", sub: "" },
                 { label: "Quiz Profiles", sub: "Skin concern matched" },
                 { label: "→", sub: "" },
+                { label: "Booking Secured", sub: "No-shows reduced" },
+                { label: "→", sub: "" },
                 { label: "Reviews Reassure", sub: "Trust established" },
                 { label: "→", sub: "" },
                 { label: "Email Nurtures", sub: "Journey continues" },
                 { label: "→", sub: "" },
                 { label: "Products Upsold", sub: "Value grows" },
               ].map((s, i) => (
-                <div key={i} style={{ textAlign: "center", padding: "4px 10px" }}>
-                  <div style={{ fontSize: s.label === "→" ? 16 : 12, fontWeight: 500, color: s.label === "→" ? C.border : C.champagne, fontFamily: s.label === "→" ? F.mono : F.body }}>{s.label}</div>
-                  {s.sub && <div style={{ fontSize: 10, color: C.muted, fontFamily: F.mono, marginTop: 2, letterSpacing: "0.04em" }}>{s.sub}</div>}
+                <div key={i} style={{ textAlign: "center", padding: "4px 8px" }}>
+                  <div style={{ fontSize: s.label === "→" ? 14 : 11, fontWeight: 500, color: s.label === "→" ? C.border : C.champagne, fontFamily: s.label === "→" ? F.mono : F.body }}>{s.label}</div>
+                  {s.sub && <div style={{ fontSize: 9, color: C.muted, fontFamily: F.mono, marginTop: 2, letterSpacing: "0.04em" }}>{s.sub}</div>}
                 </div>
               ))}
             </div>
 
             <Section label="AI Modules">
-              <div style={{ display: "grid", gap: 12 }}>
+              <div style={{ display: "grid", gap: 10 }}>
                 {BRAND.aiModules.map((m, i) => (
-                  <div key={m.num} style={{ background: C.charcoal, border: `1px solid ${C.border}`, borderRadius: 10, padding: 22, display: "grid", gridTemplateColumns: "52px 1fr auto", gap: 16, alignItems: "center" }}>
-                    <div style={{ fontFamily: F.display, fontSize: 32, fontWeight: 300, color: m.color, letterSpacing: "0.04em", lineHeight: 1 }}>{m.num}</div>
+                  <div key={m.num} style={{ background: C.charcoal, border: `1px solid ${C.border}`, borderRadius: 10, padding: 20, display: "grid", gridTemplateColumns: "52px 1fr auto", gap: 16, alignItems: "center" }}>
+                    <div style={{ fontFamily: F.display, fontSize: 30, fontWeight: 300, color: m.color, letterSpacing: "0.04em", lineHeight: 1 }}>{m.num}</div>
                     <div>
-                      <div style={{ fontFamily: F.display, fontSize: 17, fontWeight: 400, color: C.ivory, marginBottom: 5 }}>{m.name}</div>
+                      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 5 }}>
+                        <div style={{ fontFamily: F.display, fontSize: 17, fontWeight: 400, color: C.ivory }}>{m.name}</div>
+                        {m.clinic && <Pill color={m.color}>Clinic Only</Pill>}
+                      </div>
                       <div style={{ fontSize: 12, color: C.muted, lineHeight: 1.6 }}>{m.desc}</div>
                     </div>
                     <Pill color={m.color}>Phase {i + 1}</Pill>
@@ -331,14 +334,33 @@ export default function LumeBrandSheet() {
               </div>
             </Section>
 
-            <div style={{ background: `linear-gradient(135deg, ${C.charcoal}, ${C.smoke})`, border: `1px solid ${C.gold}30`, borderRadius: 10, padding: 24, marginTop: 8 }}>
+            {/* Booking & No-Show Logic — Module 06 specific */}
+            <Section label="Module 06 · Booking & No-Show Trigger Logic">
+              <div style={{ background: C.charcoal, border: `1px solid #7A9E7E30`, borderRadius: 10, overflow: "hidden" }}>
+                <div style={{ height: 2, background: "#7A9E7E" }} />
+                <div style={{ padding: "4px 0" }}>
+                  {BRAND.bookingTriggers.map((t, i) => (
+                    <div key={i} style={{ display: "grid", gridTemplateColumns: "220px 1fr 130px", gap: 16, padding: "12px 22px", borderBottom: i < BRAND.bookingTriggers.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                        <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#7A9E7E", flexShrink: 0 }} />
+                        <span style={{ fontSize: 12, color: C.champagne }}>{t.trigger}</span>
+                      </div>
+                      <div style={{ fontSize: 12, color: C.mutedMid }}>{t.action}</div>
+                      <div style={{ fontFamily: F.mono, fontSize: 10, color: "#7A9E7E", textAlign: "right" }}>{t.timing}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Section>
+
+            <div style={{ background: `linear-gradient(135deg, ${C.charcoal}, ${C.smoke})`, border: `1px solid ${C.gold}30`, borderRadius: 10, padding: 24 }}>
               <div style={{ fontFamily: F.mono, fontSize: 9, color: C.gold, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: 10 }}>Why LUMÉ is the right demo brand</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                 {[
-                  "Hybrid model exercises both the booking-focused demos (Concierge, Quiz) and e-commerce demos (Reviews, Upsell)",
-                  "High price points make ROI calculations dramatic and persuasive — recovering 3 appointments/week matters at £300+",
-                  "Luxury tone forces the AI to write with restraint and precision — the hardest and most impressive voice to demo",
-                  "Aesthetics + skincare covers the two most common verticals across all 25 proposals — maximum transferability",
+                  "Hybrid model exercises both clinic demos (Concierge, Quiz, Booking) and e-commerce demos (Reviews, Upsell) — the only fictional brand that needs all six modules",
+                  "High price points make ROI calculations dramatic — recovering 3 no-shows/week at £300+ is more compelling than any abandoned cart metric",
+                  "Luxury tone forces the AI to write with restraint and precision — the hardest and most impressive voice to demo in a client presentation",
+                  "Aesthetics + skincare covers the two most common verticals across all 25 proposals — maximum transferability to real client conversations",
                 ].map((r, i) => (
                   <div key={i} style={{ display: "flex", gap: 10 }}>
                     <span style={{ color: C.gold, flexShrink: 0, fontSize: 12 }}>—</span>
