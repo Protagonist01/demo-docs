@@ -78,7 +78,22 @@ const Pill = ({ children, color }) => (
   }}>{children}</span>
 );
 
+import { useState, useEffect } from "react";
+
+// Hook to detect narrow screens
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return isMobile;
+}
+
 export default function LumeBrandSheet() {
+  const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState("Identity");
   const tabs = ["Identity", "Colours & Type", "Services", "Products", "AI Suite"];
 
@@ -97,7 +112,7 @@ export default function LumeBrandSheet() {
       </div>
 
       {/* Tabs */}
-      <div style={{ borderBottom: `1px solid ${C.border}`, padding: "0 36px", display: "flex", gap: 2 }}>
+      <div style={{ borderBottom: `1px solid ${C.border}`, padding: isMobile ? "0 16px" : "0 36px", display: "flex", gap: 2, overflowX: "auto", whiteSpace: "nowrap" }}>
         {tabs.map(t => (
           <button key={t} onClick={() => setActiveTab(t)} style={{
             background: "none", border: "none",
@@ -110,7 +125,7 @@ export default function LumeBrandSheet() {
         ))}
       </div>
 
-      <div style={{ padding: "40px 36px 80px", maxWidth: 1020, margin: "0 auto" }}>
+      <div style={{ padding: isMobile ? "24px 16px 60px" : "40px 36px 80px", maxWidth: 1020, margin: "0 auto" }}>
 
         {/* IDENTITY */}
         {activeTab === "Identity" && (
@@ -123,7 +138,7 @@ export default function LumeBrandSheet() {
             </div>
 
             <Section label="Brand Fundamentals">
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr 1fr", gap: 14 }}>
                 {[
                   { label: "Full Name", value: "LUMÉ Clinic & Skincare" },
                   { label: "Tagline", value: BRAND.tagline },
@@ -144,8 +159,8 @@ export default function LumeBrandSheet() {
             </Section>
 
             <Section label="Voice & Tone">
-              <div style={{ background: C.charcoal, border: `1px solid ${C.border}`, borderRadius: 10, padding: 28 }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+              <div style={{ background: C.charcoal, border: `1px solid ${C.border}`, borderRadius: 10, padding: isMobile ? 20 : 28 }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
                   <div>
                     <div style={{ fontFamily: F.mono, fontSize: 9, color: C.gold, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14 }}>LUMÉ Sounds Like</div>
                     {["Calm and assured — never pushy", "Clinical authority without cold detachment", "Precise language — no filler words, no hype", "Inclusive luxury — confident, not intimidating", "Results-led — always specific, never vague"].map(t => (
@@ -186,7 +201,7 @@ export default function LumeBrandSheet() {
         {activeTab === "Colours & Type" && (
           <div>
             <Section label="Colour Palette">
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, marginBottom: 20 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)", gap: 12, marginBottom: 20 }}>
                 {[
                   { name: "Obsidian", hex: C.obsidian, use: "Page background" },
                   { name: "Charcoal", hex: C.charcoal, use: "Cards, panels" },
@@ -246,7 +261,7 @@ export default function LumeBrandSheet() {
         {activeTab === "Services" && (
           <div>
             <Section label="Treatment Menu">
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12 }}>
                 {BRAND.services.map(s => (
                   <div key={s.name} style={{ background: C.charcoal, border: `1px solid ${C.border}`, borderRadius: 10, padding: 20 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
@@ -268,7 +283,7 @@ export default function LumeBrandSheet() {
         {activeTab === "Products" && (
           <div>
             <Section label="Skincare Range">
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: 12 }}>
                 {BRAND.products.map(p => (
                   <div key={p.name} style={{ background: C.charcoal, border: `1px solid ${C.border}`, borderRadius: 10, padding: 20 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
@@ -319,16 +334,17 @@ export default function LumeBrandSheet() {
             <Section label="AI Modules">
               <div style={{ display: "grid", gap: 10 }}>
                 {BRAND.aiModules.map((m, i) => (
-                  <div key={m.num} style={{ background: C.charcoal, border: `1px solid ${C.border}`, borderRadius: 10, padding: 20, display: "grid", gridTemplateColumns: "52px 1fr auto", gap: 16, alignItems: "center" }}>
-                    <div style={{ fontFamily: F.display, fontSize: 30, fontWeight: 300, color: m.color, letterSpacing: "0.04em", lineHeight: 1 }}>{m.num}</div>
+                  <div key={m.num} style={{ background: C.charcoal, border: `1px solid ${C.border}`, borderRadius: 10, padding: isMobile ? 16 : 20, display: "grid", gridTemplateColumns: isMobile ? "36px 1fr" : "52px 1fr auto", gap: isMobile ? 12 : 16, alignItems: isMobile ? "flex-start" : "center" }}>
+                    <div style={{ fontFamily: F.display, fontSize: isMobile ? 24 : 30, fontWeight: 300, color: m.color, letterSpacing: "0.04em", lineHeight: 1 }}>{m.num}</div>
                     <div>
-                      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 5 }}>
+                      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 5, flexWrap: "wrap" }}>
                         <div style={{ fontFamily: F.display, fontSize: 17, fontWeight: 400, color: C.ivory }}>{m.name}</div>
                         {m.clinic && <Pill color={m.color}>Clinic Only</Pill>}
+                        {isMobile && <Pill color={m.color}>Phase {i + 1}</Pill>}
                       </div>
                       <div style={{ fontSize: 12, color: C.muted, lineHeight: 1.6 }}>{m.desc}</div>
                     </div>
-                    <Pill color={m.color}>Phase {i + 1}</Pill>
+                    {!isMobile && <Pill color={m.color}>Phase {i + 1}</Pill>}
                   </div>
                 ))}
               </div>
@@ -340,9 +356,9 @@ export default function LumeBrandSheet() {
                 <div style={{ height: 2, background: "#7A9E7E" }} />
                 <div style={{ padding: "4px 0" }}>
                   {BRAND.bookingTriggers.map((t, i) => (
-                    <div key={i} style={{ display: "grid", gridTemplateColumns: "220px 1fr 130px", gap: 16, padding: "12px 22px", borderBottom: i < BRAND.bookingTriggers.length - 1 ? `1px solid ${C.border}` : "none" }}>
-                      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                        <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#7A9E7E", flexShrink: 0 }} />
+                    <div key={i} style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "220px 1fr 130px", gap: isMobile ? 8 : 16, padding: isMobile ? "16px" : "12px 22px", borderBottom: i < BRAND.bookingTriggers.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                      <div style={{ display: "flex", gap: 8, alignItems: isMobile ? "flex-start" : "center" }}>
+                        <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#7A9E7E", flexShrink: 0, marginTop: isMobile ? 6 : 0 }} />
                         <span style={{ fontSize: 12, color: C.champagne }}>{t.trigger}</span>
                       </div>
                       <div style={{ fontSize: 12, color: C.mutedMid }}>{t.action}</div>
@@ -353,9 +369,9 @@ export default function LumeBrandSheet() {
               </div>
             </Section>
 
-            <div style={{ background: `linear-gradient(135deg, ${C.charcoal}, ${C.smoke})`, border: `1px solid ${C.gold}30`, borderRadius: 10, padding: 24 }}>
+            <div style={{ background: `linear-gradient(135deg, ${C.charcoal}, ${C.smoke})`, border: `1px solid ${C.gold}30`, borderRadius: 10, padding: isMobile ? 20 : 24 }}>
               <div style={{ fontFamily: F.mono, fontSize: 9, color: C.gold, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: 10 }}>Why LUMÉ is the right demo brand</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
                 {[
                   "Hybrid model exercises both clinic demos (Concierge, Quiz, Booking) and e-commerce demos (Reviews, Upsell) — the only fictional brand that needs all six modules",
                   "High price points make ROI calculations dramatic — recovering 3 no-shows/week at £300+ is more compelling than any abandoned cart metric",
