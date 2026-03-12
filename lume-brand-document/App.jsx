@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const BRAND = {
   name: "LUMÉ",
@@ -78,7 +78,6 @@ const Pill = ({ children, color }) => (
   }}>{children}</span>
 );
 
-import { useState, useEffect } from "react";
 
 // Hook to detect narrow screens
 function useIsMobile() {

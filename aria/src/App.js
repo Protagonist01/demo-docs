@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DS = {
   colors: {
@@ -115,7 +115,6 @@ const MetaRow = ({ label, value, color }) => (
   </div>
 );
 
-import { useState, useEffect } from "react";
 
 // Hook to detect narrow screens
 function useIsMobile() {
